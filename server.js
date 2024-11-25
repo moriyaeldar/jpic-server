@@ -21,6 +21,9 @@ const photoSchema = new mongoose.Schema({
     path: String,
     originalName: String,
     createdAt: { type: Date, default: Date.now },
+    category: String,
+    title: String,
+    description: String
 });
 
 const Photo = mongoose.model('Photo', photoSchema);
@@ -52,7 +55,6 @@ const protect = async (req, res, next) => {
 };
 
 const admin = (req, res, next) => {
-    console.log(req.data)
     if (req.data.user && req.data.user.role === 'admin') {
         next();
     } else {
@@ -93,11 +95,13 @@ app.get('/api/users', async (req, res) => {
 
 // Routes
 app.post('/api/photos', upload.single('photo'), async (req, res) => {
-    console.log(req)
     const photo = new Photo({
         filename: req.file.filename,
         path: req.file.path,
         originalName: req.file.originalname,
+        category: req.body.category,
+        title: req.body.title,
+        description: req.body.description,
     });
     await photo.save();
     res.send(photo);
