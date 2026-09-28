@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
@@ -11,10 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const SECRET_KEY = 'your_secret_key';
+const SECRET_KEY = process.env.JWT_SECRET;
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://jpicweb:lGIdYUTDg252q8Zx@jpic.5crpoy8.mongodb.net/?retryWrites=true&w=majority&appName=jpic');
+mongoose.connect(process.env.MONGO_URI);
 
 const photoSchema = new mongoose.Schema({
     filename: String,
